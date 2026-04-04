@@ -1,23 +1,22 @@
 import math
 
-def f_recursiva(n):
-    if n == 1:
-        return 2
+def master_theorem(a, b, f_exp):
+    log_b_a = math.log(a, b)
+    
+    if log_b_a > f_exp:
+        return f"O(n^{log_b_a:.2f})"
+    elif math.isclose(log_b_a, f_exp):
+        return f"O(n^{f_exp} * log n)"
     else:
-        return 2 * f_recursiva(n - 1) + n**2
+        return f"O(n^{f_exp})"
 
-def main():
-    try:
-        n = int(input("Digite o valor de n (inteiro positivo): "))
-        
-        if n < 1:
-            print("Por favor, insira um valor maior ou igual a 1.")
-        else:
-            resultado = f_recursiva(n)
-            print(f"\nO resultado de F({n}) via recursão é: {resultado}")
-            
-    except ValueError:
-        print("Entrada inválida. Digite um número inteiro.")
+recorrencias = [
+    {"label": "T(n) = 2T(n/4) + sqrt(n)", "a": 2, "b": 4, "exp": 0.5},
+    {"label": "T(n) = 2T(n/4) + n",       "a": 2, "b": 4, "exp": 1.0},
+    {"label": "T(n) = 16T(n/4) + n^2",   "a": 16, "b": 4, "exp": 2.0}
+]
 
-if __name__ == "__main__":
-    main()
+print("### Resolução das Recorrências ###\n")
+for rec in recorrencias:
+    resultado = master_theorem(rec["a"], rec["b"], rec["exp"])
+    print(f"{rec['label']}  =>  Complexidade: {resultado}")
